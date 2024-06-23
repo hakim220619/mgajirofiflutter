@@ -1,6 +1,9 @@
 import 'package:flutmgaji/absensi/absensiPage.dart';
+import 'package:flutmgaji/absensi/listUsers.dart';
+import 'package:flutmgaji/gaji/ListUserGaji.dart';
 import 'package:flutmgaji/gaji/listGajiPage.dart';
 import 'package:flutmgaji/login/view/login.dart';
+import 'package:flutmgaji/password/GantiPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -95,12 +98,14 @@ class _HomepageState extends State<Homepage> {
   String? full_name = '';
   String? noTlp = '';
   String? email = '';
+  String? role = '';
   Future callUsers() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       full_name = preferences.getString('full_name');
       noTlp = preferences.getString('phone');
       email = preferences.getString('email');
+      role = preferences.getString('role');
     });
   }
 
@@ -177,6 +182,13 @@ class _HomepageState extends State<Homepage> {
                         Text('${noTlp}', style: TextStyle(color: Colors.white),),
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Role:', style: TextStyle(color: Colors.white),),
+                        Text('${role == '1' ? 'Admin' : 'Pegawai'}', style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -185,27 +197,12 @@ class _HomepageState extends State<Homepage> {
           SizedBox(
             height: 100,
           ),
+          role == '2' ? 
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Card(
-                  clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AbsensiPage()));
-                    },
-                    child: const SizedBox(
-                      width: 300,
-                      height: 100,
-                      child: Center(child: Text('List Absens')),
-                    ),
-                  ),
-                ),
+                
                 Card(
                   clipBehavior: Clip.hardEdge,
                   child: InkWell(
@@ -223,9 +220,68 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 ),
+                Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GantiPassword()));
+                    },
+                    child: const SizedBox(
+                      width: 300,
+                      height: 100,
+                      child: Center(child: Text('Ganti Password')),
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
+          ) : 
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                
+                Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ListUserPegawai()));
+                    },
+                    child: const SizedBox(
+                      width: 300,
+                      height: 100,
+                      child: Center(child: Text('Absensi')),
+                    ),
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    splashColor: Colors.blue.withAlpha(30),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ListUserGaji()));
+                    },
+                    child: const SizedBox(
+                      width: 300,
+                      height: 100,
+                      child: Center(child: Text('Gaji')),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

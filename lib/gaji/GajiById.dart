@@ -1,3 +1,4 @@
+import 'package:flutmgaji/gaji/ListUserGaji.dart';
 import 'package:flutmgaji/home/HomePage.dart';
 import 'package:flutter/material.dart';
 
@@ -8,24 +9,25 @@ import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ListGajiPage extends StatefulWidget {
-  
-  const ListGajiPage({
+class GajiById extends StatefulWidget {
+  final String id;
+  const GajiById({
+    required this.id,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ListGajiPage> createState() => _ListGajiPageState();
+  State<GajiById> createState() => _GajiByIdState();
 }
 
 List _listsData = [];
 
-class _ListGajiPageState extends State<ListGajiPage> {
+class _GajiByIdState extends State<GajiById> {
   Future<dynamic> listKeluhan() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var token = preferences.getString('token');
-      var url = Uri.parse('${dotenv.env['url']}/Gaji');
+      var url = Uri.parse('${dotenv.env['url']}/ListGajiById/${widget.id}');
       final response = await http.get(url, headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $token",
@@ -36,7 +38,7 @@ class _ListGajiPageState extends State<ListGajiPage> {
         // print(data);
         setState(() {
           _listsData = data['data'];
-          // print(_listsData);
+          print(_listsData);
         });
       }
     } catch (e) {
@@ -69,7 +71,7 @@ class _ListGajiPageState extends State<ListGajiPage> {
         leading: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Homepage()));
+                MaterialPageRoute(builder: (context) => const ListUserGaji()));
           },
           child: const Icon(
             Icons.arrow_back_ios,
